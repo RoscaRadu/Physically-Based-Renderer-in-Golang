@@ -13,11 +13,11 @@ type Matrix4 struct {
 }
 
 //Creates a new matrix with the given information
-func NewMatrix4(a1, a2, a3, a4, b1, b2, b3, b4, c1, c2, c3, c4, d1, d2, d3, d4 float64) (m Matrix4) {
-	m.el[0] = [4]float64{a1, b1, c1, d1}
-	m.el[1] = [4]float64{a2, b2, c2, d2}
-	m.el[2] = [4]float64{a3, b3, c3, d3}
-	m.el[3] = [4]float64{a4, b4, c4, d4}
+func NewMatrix4(a [4]float64,b [4]float64,c [4]float64,d [4]float64) (m Matrix4) {
+	m.el[0] = a
+	m.el[1] = b
+	m.el[2] = c
+	m.el[3] = d
 	return
 }
 
@@ -36,12 +36,13 @@ func NewLookAtMatrix4(eye Vector3, target Vector3) Matrix4 {
 	right := yAxis.Cross(forward).Normalize()
 	u := forward.Cross(right).Normalize()
 
-	return NewMatrix4(
-		right.X, u.X, forward.X, 0,
-		right.Y, u.Y, forward.Y, 0,
-		right.Z, u.Z, forward.Z, 0,
-		0, 0, 0, 1,
-	)
+	a:=[4]float64 {right.X, u.X, forward.X, 0}
+	b:=[4]float64 {right.Y, u.Y, forward.Y, 0}
+	c:=[4]float64 {right.Z, u.Z, forward.Z, 0}
+	d:=[4]float64 {0, 0, 0, 1}
+
+	return NewMatrix4(a,b,c,d)
+
 }
 
 //Multiplies two given matrices

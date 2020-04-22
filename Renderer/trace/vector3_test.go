@@ -137,10 +137,14 @@ func TestLength(t *testing.T){
 }
 
 func TestLerp(t *testing.T){
-	testVector := Vector3{5,3,1}
-	testVector2 := Vector3{5,3,1}
-	var n,m float64
+	testVector := Vector3{2,1,2}
+	testVector2 := Vector3{1,2,3}
+	var n float64
 	n=3
-	m
-	espectation:=Vector3{0,0,0}
+
+	expected:=Vector3{-1,4,5}
+	if testVector.Lerp(testVector2,n)!=expected{
+		t.Errorf(" expected %3f but got %3f",
+			expected,testVector.Lerp(testVector2,n))
+	}
 }
