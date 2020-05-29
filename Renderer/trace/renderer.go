@@ -22,3 +22,4 @@ func (r *Renderer) Write(samples []uint8, file string) error {
 	m.Pix = samples
 	return  png.Encode(f, m)
 }
+
