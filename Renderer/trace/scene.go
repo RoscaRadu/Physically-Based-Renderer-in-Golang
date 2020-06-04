@@ -6,25 +6,27 @@ import (
 	"os"
 )
 
-type RGBAE struct{
-	Width int
+// RGBAE Describes an rgbae (hdr) image
+type RGBAE struct {
+	Width  int
 	Height int
-	Data []float32
+	Data   []float32
 	Expose float64
 }
 
-type Scene struct{
+// Scene describes a 3d scene
+type Scene struct {
 	Spheres []Sphere
-	image RGBAE
+	image   RGBAE
 }
 
-type Hit struct{
+// Hit describes an intersection
+type Hit struct {
 	Normal Vector3
-	Mat Material
-	Dist float64
-	Point Vector3
+	Mat    Material
+	Dist   float64
+	Point  Vector3
 }
-
 
 // Intersect tests whether a ray hits any objects in the scene
 func (s *Scene) Intersect(ray Ray3) (intersection bool, hit Hit) {
@@ -47,13 +49,12 @@ func (s *Scene) Intersect(ray Ray3) (intersection bool, hit Hit) {
 	return
 }
 
-
 // Env returns the light value from the environment map
 // http://gl.ict.usc.edu/Data/HighResProbes/
 func (s *Scene) Env(ray Ray3) Vector3 {
 	if s.image.Width > 0 && s.image.Height > 0 {
 		u := 1 + math.Atan2(ray.Dir.X, -ray.Dir.Z)/math.Pi
-		v := math.Acos(ray.Dir.Y) / math.Pi
+		v := 1 - math.Acos(ray.Dir.Y)/math.Pi
 		x := int(u * float64(s.image.Width))
 		y := int(v * float64(s.image.Height))
 		index := (y*s.image.Width + x) * 3

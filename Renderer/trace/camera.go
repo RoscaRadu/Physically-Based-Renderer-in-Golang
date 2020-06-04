@@ -1,25 +1,23 @@
 package trace
 
+import "math/rand"
+
+
 // Camera simulates a camera
 type Camera struct {
-	Width   int
-	Height  int
-	Lens    float64
-	Sensor  float64
-	origin  Vector3
-	dir     Vector3
-	focus   float64
-	fStop   float64
-	toWorld Matrix4
+	Origin Vector3
+	Width  int
+	Height int
 }
 
-func NewCamera(width, height int , lens float64) Camera {
-	return Camera{
-		Width: width,
-		Height: height,
-		Lens: lens,
-		Sensor: 0.024, // 24mm height, full frame equivalent
-	}
+// Ray creates a Ray originating from the Camera
+func (c *Camera) Ray(x, y int, rnd *rand.Rand) Ray3 {
+	aspect := float64(c.Width) / float64(c.Height)
+	rx := float64(x) + rnd.Float64()
+	ry := float64(y) + rnd.Float64()
+	px := (rx/float64(c.Width) - 0.5) * aspect
+	py := ry/float64(c.Height) - 0.5
+	projected := Vector3{px, py, -1}
+	dir := projected.Minus(c.Origin).Normalize()
+	return Ray3{Origin: c.Origin, Dir: dir}
 }
-
-
