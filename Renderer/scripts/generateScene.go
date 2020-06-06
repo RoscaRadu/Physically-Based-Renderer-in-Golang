@@ -1,22 +1,16 @@
-package main
+package scripts
 
 import (
-	"../trace"
-	"flag"
+	"encoding/json"
 	"fmt"
+	"../trace"
 )
 
+func main()  {
 
-func main() {
-	out := flag.String("out", "trace.png", "Output png filename.")
-	samples := flag.Int("samples", 128, "Number of samples to take.")
-	heat := flag.String("heat", "", "Heatmap png filename.")
-	flag.Parse()
 
 	scene := trace.Scene{}
-	camera := trace.Camera{Width: 1280, Height: 720}
-	sampler := trace.NewSampler(&camera, &scene, 10)
-	renderer := trace.NewRenderer(&camera)
+	//camera := trace.Camera{Width: 1280, Height: 720}
 	light := trace.NewLight(1000, 1000, 1000)
 	redPlastic := trace.NewPlastic(1, 0, 0, 1)
 	bluePlastic := trace.NewPlastic(0, 0, 1, 1)
@@ -33,11 +27,7 @@ func main() {
 	scene.Add(trace.Sphere{trace.Vector3{0, 10001, -6}, 10000, whitePlastic})
 
 
-	fmt.Printf("Collecting %vx%v samples...\n", *samples, *samples)
-	sampler.Collect(*samples)
-	renderer.Write(sampler.Values(), *out)
-	if len(*heat) > 0 {
-		renderer.Write(sampler.Counts(), *heat)
-	}
-	fmt.Printf("Done: %v\n", *out)
+	jsonData, _ := json.MarshalIndent(scene, "", "    ")
+	fmt.Println(string(jsonData))
+// trebuie sa adaug si camera intrun fel
 }
