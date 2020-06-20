@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+
 // RGBAE Describes an rgbae (hdr) image
 type RGBAE struct {
 	Width  int
@@ -54,7 +55,7 @@ func (s *Scene) Intersect(ray Ray3) (intersection bool, hit Hit) {
 func (s *Scene) Env(ray Ray3) Vector3 {
 	if s.image.Width > 0 && s.image.Height > 0 {
 		u := 1 + math.Atan2(ray.Dir.X, -ray.Dir.Z)/math.Pi
-		v := 1 - math.Acos(ray.Dir.Y)/math.Pi
+		v := math.Acos(ray.Dir.Y) / math.Pi
 		x := int(u * float64(s.image.Width))
 		y := int(v * float64(s.image.Height))
 		index := (y*s.image.Width + x) * 3
